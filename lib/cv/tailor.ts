@@ -43,11 +43,13 @@ Your job:
 Writing rules for bullets and summary:
 - Before writing a bullet, ask: what was the actual thing built, changed, or decided? Name the concrete action.
 - Write as a confident professional talking to a peer — plain language, no pitch-speak
-- Do NOT use: leverage, utilize, operationalize, scalable, verticalized, contextualized, or noun-stacked jargon
-- Not every bullet needs a metric. When you do include numbers, vary the format: some as dollar amounts, some as timeframes, some as team sizes, some with none at all
-- After drafting a bullet, ask: would this sound strange said aloud in an interview? If yes, rewrite it simply
-- Bullets are 1–2 lines. The first bullet per role is a short italic intro (1–2 sentences) summarizing what the role was — no label prefix, no metric required
-- Remaining bullets: when there is a clear category, start with "Label: sentence." Otherwise write a plain sentence — do not force a label onto every bullet
+- NEVER use these words or phrases: leverage, utilize, operationalize, scalable, verticalized, contextualized, activation loops, repeatable pathways, enablement paths, or any noun-stacked jargon
+- Do NOT label every bullet with a colon-prefix (e.g. "AI Adoption Strategy: ..."). Only label a bullet when the category is genuinely useful. Most bullets should be plain sentences.
+- Not every bullet needs a metric. When you include numbers, vary the format: some as dollar amounts, some as timeframes, some as team sizes, some with none at all. Never put a clean percentage in every single bullet.
+- Metrics should appear naturally mid-sentence, not as the punchline of every bullet
+- The first bullet per role is a short italic intro (1–2 sentences) summarizing what the role was — no label, no metric required
+- After drafting each bullet, ask: would a real person say this out loud in an interview? If not, rewrite it simply.
+- Bullets are 1–2 lines max
 - Dates in YYYY-MM format. Use "Present" for current roles.`;
 
   const outputSchema = {
@@ -59,7 +61,7 @@ Writing rules for bullets and summary:
         location: "<str>",
         start: "<YYYY-MM>",
         end: "<YYYY-MM or Present>",
-        bullets: ["<italic intro sentence>", "<Label: bullet>", "..."],
+        bullets: ["<italic intro sentence>", "<bullet>", "..."],
       },
     ],
     skills_hard: ["<skill>"],
@@ -78,11 +80,25 @@ ${jobDescription.slice(0, 4000)}
 CANDIDATE PROFILE:
 ${JSON.stringify({ base_summary: profile.summary, work_experience: profile.workExperience }, null, 2)}
 
+BULLET EXAMPLES — follow this pattern:
+
+BAD (AI-sounding):
+"AI Adoption Strategy: Partner with Product and Marketing to develop verticalized enablement paths, driving 30% increase in platform adoption through contextualized use case content"
+
+GOOD (human-sounding):
+"Built segment-specific onboarding content for two distinct customer types; adoption rose 30% within two quarters of rollout"
+
+BAD: "Confident Facilitator: Built and led team of 8 direct reports, facilitating training and hands-on workshops to drive operational excellence"
+GOOD: "Managed a team of 8 and ran the training programs myself — workshops, not slide decks"
+
+BAD: "Workflow Automation: Designed and implemented workflow solutions that automated 500+ monthly processes, achieving 40% reduction in manual effort and $1.1M cost savings"
+GOOD: "Automated 500+ monthly back-office transactions using Zapier and Make.com; saved $1.1M in FTE cost and freed the ops team to focus on exceptions, not data entry"
+
 OUTPUT SCHEMA (return only valid JSON):
 ${JSON.stringify(outputSchema, null, 2)}`;
 
   const response = await client.messages.create({
-    model: "claude-opus-4-5",
+    model: "claude-opus-4-6",
     max_tokens: 4096,
     messages: [{ role: "user", content: userPrompt }],
     system: systemPrompt,
@@ -94,7 +110,7 @@ ${JSON.stringify(outputSchema, null, 2)}`;
 
   const parsed = JSON.parse(jsonMatch[0]);
 
-  return {
+  const result: TailoredCV = {
     candidateName: profile.personal.name,
     candidateEmail: profile.personal.email,
     candidatePhone: profile.personal.phone,
@@ -116,4 +132,21 @@ ${JSON.stringify(outputSchema, null, 2)}`;
     education: profile.education,
     keywordCoverage: Math.round((parsed.keyword_coverage ?? 0.9) * 100),
   };
+
+  const flagged = flagJargon(result);
+  if (flagged.length > 0) {
+    console.warn("[tailor.ts] Jargon detected in CV output:", flagged);
+  }
+  return result;
+}
+
+const JARGON_FLAGS = [
+  "operationalize", "verticalized", "contextualized", "activation loop",
+  "repeatable pathway", "enablement path", "leverage", "utilize",
+  "scalable pathways", "noun-stacked"
+];
+
+function flagJargon(cv: TailoredCV): string[] {
+  const text = JSON.stringify(cv).toLowerCase();
+  return JARGON_FLAGS.filter(word => text.includes(word));
 }

@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { PROFILE, SkillMode, getBulletsForMode } from "../profile";
+import { ProfileData } from "@/lib/db/schema";
 
 export interface TailoredCV {
   candidateName: string;
@@ -20,7 +20,7 @@ export interface TailoredCV {
   }[];
   skillsHard: string[];
   tools: string[];
-  education: typeof PROFILE.education;
+  education: ProfileData["education"];
   keywordCoverage: number;
 }
 
@@ -28,17 +28,9 @@ export async function tailorCV(
   jobTitle: string,
   companyName: string,
   jobDescription: string,
-  skillMode: SkillMode
+  profile: ProfileData
 ): Promise<TailoredCV> {
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
-  const experienceData = PROFILE.workExperience.map((exp) => ({
-    company: exp.company,
-    title: exp.title,
-    location: exp.location,
-    start: exp.start,
-    end: exp.end,
-    bullets: getBulletsForMode(exp, skillMode),
-  }));
 
   const systemPrompt = `You are an expert resume writer and ATS optimization specialist.
 Your job is to tailor a candidate's master CV to a specific job posting in a way that:
@@ -81,7 +73,7 @@ JOB DESCRIPTION:
 ${jobDescription.slice(0, 4000)}
 
 CANDIDATE PROFILE:
-${JSON.stringify({ base_summary: PROFILE.summaryVariants[skillMode], work_experience: experienceData }, null, 2)}
+${JSON.stringify({ base_summary: profile.summary, work_experience: profile.workExperience }, null, 2)}
 
 OUTPUT SCHEMA (return only valid JSON):
 ${JSON.stringify(outputSchema, null, 2)}`;
@@ -100,15 +92,15 @@ ${JSON.stringify(outputSchema, null, 2)}`;
   const parsed = JSON.parse(jsonMatch[0]);
 
   return {
-    candidateName: PROFILE.personal.name,
-    candidateEmail: PROFILE.personal.email,
-    candidatePhone: PROFILE.personal.phone,
-    candidateLinkedin: PROFILE.personal.linkedin,
-    candidateLocation: PROFILE.personal.location,
+    candidateName: profile.personal.name,
+    candidateEmail: profile.personal.email,
+    candidatePhone: profile.personal.phone,
+    candidateLinkedin: profile.personal.linkedin,
+    candidateLocation: profile.personal.location,
     jobTitle,
     companyName,
     summary: parsed.summary ?? "",
-    experience: (parsed.experience ?? experienceData).map((exp: any) => ({
+    experience: (parsed.experience ?? profile.workExperience).map((exp: any) => ({
       company: exp.company,
       title: exp.title,
       location: exp.location,
@@ -116,9 +108,9 @@ ${JSON.stringify(outputSchema, null, 2)}`;
       end: exp.end,
       bullets: exp.bullets ?? [],
     })),
-    skillsHard: parsed.skills_hard ?? PROFILE.skills.hard,
-    tools: parsed.tools ?? PROFILE.skills.tools,
-    education: PROFILE.education,
+    skillsHard: parsed.skills_hard ?? profile.skills.hard,
+    tools: parsed.tools ?? profile.skills.tools,
+    education: profile.education,
     keywordCoverage: Math.round((parsed.keyword_coverage ?? 0.9) * 100),
   };
 }

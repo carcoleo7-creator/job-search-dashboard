@@ -1,4 +1,15 @@
-import { pgTable, text, timestamp, integer, jsonb, boolean, serial, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer, jsonb, boolean, serial } from "drizzle-orm/pg-core";
+
+export interface ProfileData {
+  personal: { name: string; email: string; phone: string; linkedin: string; location: string };
+  headline: string;
+  summary: string;
+  workExperience: Array<{
+    company: string; title: string; location: string; start: string; end: string; bullets: string[];
+  }>;
+  skills: { hard: string[]; tools: string[] };
+  education: Array<{ degree: string; field: string; school: string; location: string; year: string }>;
+}
 
 export const companies = pgTable("companies", {
   id: text("id").primaryKey(),
@@ -41,6 +52,15 @@ export const generatedCvs = pgTable("generated_cvs", {
   created_at: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const profiles = pgTable("profiles", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  is_active: boolean("is_active").default(false).notNull(),
+  data: jsonb("data").$type<ProfileData>().notNull(),
+  created_at: timestamp("created_at").defaultNow().notNull(),
+  updated_at: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export const searchSettings = pgTable("search_settings", {
   id: integer("id").primaryKey().default(1),
   keywords: jsonb("keywords").$type<string[]>().default([]),
@@ -52,3 +72,4 @@ export type Company = typeof companies.$inferSelect;
 export type Job = typeof jobs.$inferSelect;
 export type GeneratedCv = typeof generatedCvs.$inferSelect;
 export type SearchSettings = typeof searchSettings.$inferSelect;
+export type Profile = typeof profiles.$inferSelect;

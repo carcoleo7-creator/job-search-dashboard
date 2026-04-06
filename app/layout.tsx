@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
-import { Briefcase, FileText, Building2, LayoutDashboard, Settings } from "lucide-react";
+import { Briefcase, FileText, Building2, LayoutDashboard, Settings, UserCircle } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Job Search Dashboard",
@@ -24,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <NavLink href="/jobs" icon={<Briefcase size={16} />} label="Jobs" />
               <NavLink href="/cvs" icon={<FileText size={16} />} label="My CVs" />
               <NavLink href="/companies" icon={<Building2 size={16} />} label="Companies" />
+              <NavLink href="/profiles" icon={<UserCircle size={16} />} label="Profiles" />
               <NavLink href="/settings" icon={<Settings size={16} />} label="Search Criteria" />
             </nav>
           </aside>

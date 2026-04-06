@@ -32,20 +32,23 @@ export async function tailorCV(
 ): Promise<TailoredCV> {
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
-  const systemPrompt = `You are an expert resume writer and ATS optimization specialist.
-Your job is to tailor a candidate's master CV to a specific job posting in a way that:
-1. Maximizes ATS keyword matching from the job description
-2. Reframes existing experience using the JD's language and priorities
-3. Keeps the summary tight (3–4 sentences max), role-specific, and keyword-rich
-4. Ensures every section is honest — only reframe existing experience, never fabricate
-5. Returns ONLY valid JSON matching the schema provided. No extra commentary.
+  const systemPrompt = `You are an expert resume writer helping tailor a candidate's CV to a specific job posting.
 
-ATS optimization rules:
-- Dates in YYYY-MM format (e.g. 2023-01). Use "Present" for current roles.
-- Bullets are 1–2 lines; prefer bullets with $ amounts, %, team sizes, or time savings
-- Every bullet must follow: "Bold Label: Full sentence with quantified impact."
-- Include the top 10–15 JD keywords naturally in bullets and summary
-- First bullet per role should be a 1-2 sentence italic intro summarizing the role scope (no label prefix)`;
+Your job:
+1. Match the role's priorities by drawing on the candidate's real experience — only reframe what actually happened, never fabricate
+2. Write a summary that is 3–4 sentences, direct and specific to this role
+3. Include relevant keywords from the job description naturally, in context
+4. Return ONLY valid JSON matching the schema provided. No extra commentary.
+
+Writing rules for bullets and summary:
+- Before writing a bullet, ask: what was the actual thing built, changed, or decided? Name the concrete action.
+- Write as a confident professional talking to a peer — plain language, no pitch-speak
+- Do NOT use: leverage, utilize, operationalize, scalable, verticalized, contextualized, or noun-stacked jargon
+- Not every bullet needs a metric. When you do include numbers, vary the format: some as dollar amounts, some as timeframes, some as team sizes, some with none at all
+- After drafting a bullet, ask: would this sound strange said aloud in an interview? If yes, rewrite it simply
+- Bullets are 1–2 lines. The first bullet per role is a short italic intro (1–2 sentences) summarizing what the role was — no label prefix, no metric required
+- Remaining bullets: when there is a clear category, start with "Label: sentence." Otherwise write a plain sentence — do not force a label onto every bullet
+- Dates in YYYY-MM format. Use "Present" for current roles.`;
 
   const outputSchema = {
     summary: "<tailored 3-4 sentence summary>",

@@ -1,0 +1,59 @@
+export type AtsType = "greenhouse" | "lever" | "ashby" | "workday" | "generic";
+
+export interface CompanyConfig {
+  id: string;
+  name: string;
+  ats_type: AtsType;
+  ats_identifier: string;
+  careers_url: string;
+  preferred_skill_modes: string[];
+  target_roles: string[];
+  auto_apply: boolean;
+}
+
+export const COMPANIES: CompanyConfig[] = [
+  // ── ASHBY ──
+  { id: "commonroom", name: "Common Room", ats_type: "ashby", ats_identifier: "commonroom", careers_url: "https://jobs.ashbyhq.com/commonroom", preferred_skill_modes: ["strategy_ops", "revenue_ops", "product_ops"], target_roles: ["operations", "strategy", "chief of staff", "business operations", "revenue operations"], auto_apply: false },
+  { id: "linear", name: "Linear", ats_type: "ashby", ats_identifier: "linear", careers_url: "https://jobs.ashbyhq.com/linear", preferred_skill_modes: ["product_ops", "strategy_ops"], target_roles: ["operations", "strategy", "chief of staff", "program manager"], auto_apply: false },
+  { id: "vercel", name: "Vercel", ats_type: "ashby", ats_identifier: "vercel", careers_url: "https://jobs.ashbyhq.com/vercel", preferred_skill_modes: ["strategy_ops", "product_ops"], target_roles: ["operations", "strategy", "chief of staff", "business operations"], auto_apply: false },
+  { id: "notion", name: "Notion", ats_type: "ashby", ats_identifier: "notion", careers_url: "https://jobs.ashbyhq.com/notion", preferred_skill_modes: ["product_ops", "strategy_ops", "program_mgmt"], target_roles: ["operations", "strategy", "program manager", "chief of staff"], auto_apply: false },
+  { id: "loom", name: "Loom", ats_type: "ashby", ats_identifier: "loom", careers_url: "https://jobs.ashbyhq.com/loom", preferred_skill_modes: ["strategy_ops", "product_ops"], target_roles: ["operations", "strategy", "chief of staff"], auto_apply: false },
+  { id: "replit", name: "Replit", ats_type: "ashby", ats_identifier: "replit", careers_url: "https://jobs.ashbyhq.com/replit", preferred_skill_modes: ["strategy_ops", "founder_ops"], target_roles: ["operations", "strategy", "chief of staff", "business operations"], auto_apply: false },
+  { id: "cursor", name: "Cursor", ats_type: "ashby", ats_identifier: "anysphere", careers_url: "https://jobs.ashbyhq.com/anysphere", preferred_skill_modes: ["strategy_ops", "founder_ops"], target_roles: ["operations", "strategy", "chief of staff"], auto_apply: false },
+  { id: "rippling", name: "Rippling", ats_type: "ashby", ats_identifier: "rippling", careers_url: "https://jobs.ashbyhq.com/rippling", preferred_skill_modes: ["strategy_ops", "revenue_ops", "product_ops"], target_roles: ["operations", "strategy", "revenue operations", "business operations"], auto_apply: false },
+  { id: "retool", name: "Retool", ats_type: "ashby", ats_identifier: "retool", careers_url: "https://jobs.ashbyhq.com/retool", preferred_skill_modes: ["strategy_ops", "product_ops"], target_roles: ["operations", "strategy", "chief of staff"], auto_apply: false },
+  { id: "brex", name: "Brex", ats_type: "ashby", ats_identifier: "brex", careers_url: "https://jobs.ashbyhq.com/brex", preferred_skill_modes: ["strategy_ops", "revenue_ops", "vp_ops"], target_roles: ["operations", "strategy", "revenue operations", "business operations"], auto_apply: false },
+
+  // ── GREENHOUSE ──
+  { id: "stripe", name: "Stripe", ats_type: "greenhouse", ats_identifier: "stripe", careers_url: "https://stripe.com/jobs", preferred_skill_modes: ["strategy_ops", "revenue_ops"], target_roles: ["operations", "strategy", "chief of staff", "business operations", "program manager"], auto_apply: false },
+  { id: "figma", name: "Figma", ats_type: "greenhouse", ats_identifier: "figma", careers_url: "https://www.figma.com/careers", preferred_skill_modes: ["product_ops", "strategy_ops", "program_mgmt"], target_roles: ["operations", "strategy", "program manager", "chief of staff"], auto_apply: false },
+  { id: "airtable", name: "Airtable", ats_type: "greenhouse", ats_identifier: "airtable", careers_url: "https://airtable.com/careers", preferred_skill_modes: ["product_ops", "strategy_ops"], target_roles: ["operations", "strategy", "chief of staff", "program manager"], auto_apply: false },
+  { id: "mixpanel", name: "Mixpanel", ats_type: "greenhouse", ats_identifier: "mixpanel", careers_url: "https://mixpanel.com/jobs", preferred_skill_modes: ["data_analytics", "product_ops", "revenue_ops"], target_roles: ["operations", "strategy", "revenue operations", "analytics"], auto_apply: false },
+  { id: "segment", name: "Segment (Twilio)", ats_type: "greenhouse", ats_identifier: "twilio", careers_url: "https://www.twilio.com/en-us/company/jobs", preferred_skill_modes: ["revenue_ops", "strategy_ops"], target_roles: ["operations", "strategy", "revenue operations", "business operations"], auto_apply: false },
+  { id: "hubspot", name: "HubSpot", ats_type: "greenhouse", ats_identifier: "hubspot", careers_url: "https://www.hubspot.com/careers", preferred_skill_modes: ["revenue_ops", "strategy_ops", "customer_success"], target_roles: ["operations", "strategy", "revenue operations", "customer success"], auto_apply: false },
+  { id: "intercom", name: "Intercom", ats_type: "greenhouse", ats_identifier: "intercom", careers_url: "https://www.intercom.com/careers", preferred_skill_modes: ["customer_success", "strategy_ops", "revenue_ops"], target_roles: ["operations", "strategy", "customer success", "revenue operations"], auto_apply: false },
+  { id: "amplitude", name: "Amplitude", ats_type: "greenhouse", ats_identifier: "amplitude", careers_url: "https://amplitude.com/careers", preferred_skill_modes: ["data_analytics", "product_ops", "revenue_ops"], target_roles: ["operations", "strategy", "analytics", "revenue operations"], auto_apply: false },
+  { id: "miro", name: "Miro", ats_type: "greenhouse", ats_identifier: "miro", careers_url: "https://miro.com/careers", preferred_skill_modes: ["product_ops", "strategy_ops", "program_mgmt"], target_roles: ["operations", "strategy", "program manager", "chief of staff"], auto_apply: false },
+  { id: "canva", name: "Canva", ats_type: "greenhouse", ats_identifier: "canva", careers_url: "https://www.canva.com/careers", preferred_skill_modes: ["strategy_ops", "product_ops"], target_roles: ["operations", "strategy", "business operations", "program manager"], auto_apply: false },
+  { id: "zendesk", name: "Zendesk", ats_type: "greenhouse", ats_identifier: "zendesk", careers_url: "https://www.zendesk.com/jobs", preferred_skill_modes: ["customer_success", "revenue_ops", "strategy_ops"], target_roles: ["operations", "strategy", "customer success", "revenue operations"], auto_apply: false },
+  { id: "lattice", name: "Lattice", ats_type: "greenhouse", ats_identifier: "lattice", careers_url: "https://lattice.com/careers", preferred_skill_modes: ["strategy_ops", "product_ops", "program_mgmt"], target_roles: ["operations", "strategy", "chief of staff", "program manager"], auto_apply: false },
+  { id: "asana", name: "Asana", ats_type: "greenhouse", ats_identifier: "asana", careers_url: "https://asana.com/jobs", preferred_skill_modes: ["product_ops", "strategy_ops", "program_mgmt"], target_roles: ["operations", "strategy", "program manager", "chief of staff"], auto_apply: false },
+  { id: "gusto", name: "Gusto", ats_type: "greenhouse", ats_identifier: "gusto", careers_url: "https://gusto.com/about/careers", preferred_skill_modes: ["strategy_ops", "revenue_ops", "vp_ops"], target_roles: ["operations", "strategy", "business operations", "revenue operations"], auto_apply: false },
+  { id: "clickup", name: "ClickUp", ats_type: "greenhouse", ats_identifier: "clickup", careers_url: "https://clickup.com/careers", preferred_skill_modes: ["product_ops", "strategy_ops", "program_mgmt"], target_roles: ["operations", "strategy", "program manager", "chief of staff"], auto_apply: false },
+
+  // ── LEVER ──
+  { id: "openai", name: "OpenAI", ats_type: "lever", ats_identifier: "openai", careers_url: "https://openai.com/careers", preferred_skill_modes: ["strategy_ops", "founder_ops", "chief_of_staff"], target_roles: ["operations", "strategy", "chief of staff", "business operations", "program manager"], auto_apply: false },
+  { id: "anthropic", name: "Anthropic", ats_type: "lever", ats_identifier: "anthropic", careers_url: "https://www.anthropic.com/careers", preferred_skill_modes: ["strategy_ops", "founder_ops", "chief_of_staff"], target_roles: ["operations", "strategy", "chief of staff", "business operations"], auto_apply: false },
+  { id: "scale_ai", name: "Scale AI", ats_type: "lever", ats_identifier: "scaleai", careers_url: "https://scale.com/careers", preferred_skill_modes: ["strategy_ops", "data_analytics", "program_mgmt"], target_roles: ["operations", "strategy", "program manager", "business operations"], auto_apply: false },
+  { id: "cohere", name: "Cohere", ats_type: "lever", ats_identifier: "cohere", careers_url: "https://cohere.com/careers", preferred_skill_modes: ["strategy_ops", "founder_ops"], target_roles: ["operations", "strategy", "chief of staff", "business operations"], auto_apply: false },
+  { id: "perplexity", name: "Perplexity AI", ats_type: "lever", ats_identifier: "perplexityai", careers_url: "https://www.perplexity.ai/careers", preferred_skill_modes: ["strategy_ops", "founder_ops"], target_roles: ["operations", "strategy", "chief of staff", "business operations"], auto_apply: false },
+  { id: "runway", name: "Runway", ats_type: "lever", ats_identifier: "runwayml", careers_url: "https://runwayml.com/careers", preferred_skill_modes: ["strategy_ops", "founder_ops"], target_roles: ["operations", "strategy", "chief of staff"], auto_apply: false },
+  { id: "zapier", name: "Zapier", ats_type: "lever", ats_identifier: "zapier", careers_url: "https://zapier.com/jobs", preferred_skill_modes: ["product_ops", "strategy_ops", "program_mgmt"], target_roles: ["operations", "strategy", "program manager", "business operations"], auto_apply: false },
+  { id: "attio", name: "Attio", ats_type: "lever", ats_identifier: "attio", careers_url: "https://attio.com/careers", preferred_skill_modes: ["revenue_ops", "strategy_ops"], target_roles: ["operations", "strategy", "revenue operations", "chief of staff"], auto_apply: false },
+
+  // ── WORKDAY ──
+  { id: "salesforce", name: "Salesforce", ats_type: "workday", ats_identifier: "salesforce", careers_url: "https://www.salesforce.com/company/careers", preferred_skill_modes: ["revenue_ops", "strategy_ops", "vp_ops"], target_roles: ["operations", "strategy", "revenue operations", "business operations"], auto_apply: false },
+  { id: "workday", name: "Workday", ats_type: "workday", ats_identifier: "workday", careers_url: "https://www.workday.com/en-us/company/careers.html", preferred_skill_modes: ["strategy_ops", "product_ops"], target_roles: ["operations", "strategy", "program manager", "chief of staff"], auto_apply: false },
+  { id: "servicenow", name: "ServiceNow", ats_type: "workday", ats_identifier: "servicenow", careers_url: "https://careers.servicenow.com", preferred_skill_modes: ["strategy_ops", "program_mgmt", "vp_ops"], target_roles: ["operations", "strategy", "program manager", "business operations"], auto_apply: false },
+  { id: "adobe", name: "Adobe", ats_type: "workday", ats_identifier: "adobe", careers_url: "https://www.adobe.com/careers.html", preferred_skill_modes: ["strategy_ops", "product_ops", "program_mgmt"], target_roles: ["operations", "strategy", "program manager", "chief of staff"], auto_apply: false },
+];

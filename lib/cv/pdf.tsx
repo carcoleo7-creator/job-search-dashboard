@@ -4,54 +4,45 @@ import {
   Text,
   View,
   StyleSheet,
-  Font,
 } from "@react-pdf/renderer";
 import { TailoredCV } from "./tailor";
 
-Font.register({
-  family: "Garamond",
-  fonts: [
-    { src: "https://fonts.gstatic.com/s/ebgaramond/v27/SlGDmQSNjdsmc35JDF1K5E55YMjF_7DPuGi-6_RUA4V-e6yHgQ.woff2", fontWeight: 400 },
-    { src: "https://fonts.gstatic.com/s/ebgaramond/v27/SlGDmQSNjdsmc35JDF1K5E55YMjF_7DPuGi-6_RUA4V-e6yHgQ.woff2", fontWeight: 700 },
-  ],
-});
-
 const s = StyleSheet.create({
-  page: { fontFamily: "Helvetica", fontSize: 10.5, color: "#000", paddingTop: 36, paddingBottom: 36, paddingLeft: 43, paddingRight: 43 },
+  page: { fontFamily: "Times-Roman", fontSize: 10.5, color: "#000", paddingTop: 36, paddingBottom: 36, paddingLeft: 43, paddingRight: 43 },
   // Header
   headerTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 2 },
-  name: { fontSize: 22, fontFamily: "Helvetica-Bold", letterSpacing: 0.5 },
+  name: { fontSize: 22, fontFamily: "Times-Bold" },
   contact: { fontSize: 9.5, textAlign: "right", lineHeight: 1.5 },
   location: { fontSize: 9.5, marginBottom: 4 },
   divider: { borderBottomWidth: 1, borderBottomColor: "#000", marginBottom: 5 },
   titleBlock: { alignItems: "center", marginBottom: 3 },
-  titleBold: { fontSize: 10.5, fontFamily: "Helvetica-Bold" },
-  titleItalic: { fontSize: 10, fontFamily: "Helvetica-Oblique" },
+  titleBold: { fontSize: 10.5, fontFamily: "Times-Bold" },
+  titleItalic: { fontSize: 10, fontFamily: "Times-Italic" },
   // Section
   section: { marginTop: 6 },
-  sectionHeading: { fontSize: 10.5, fontFamily: "Helvetica-Bold", textTransform: "uppercase", borderBottomWidth: 1.5, borderBottomColor: "#000", paddingBottom: 1.5, marginBottom: 5, letterSpacing: 0.5 },
+  sectionHeading: { fontSize: 10.5, fontFamily: "Times-Bold", textTransform: "uppercase", borderBottomWidth: 1.5, borderBottomColor: "#000", paddingBottom: 1.5, marginBottom: 5, letterSpacing: 0.5 },
   // Summary
   summaryText: { fontSize: 10, lineHeight: 1.45 },
   // Competencies
   competencyRow: { fontSize: 10, lineHeight: 1.4, marginBottom: 1 },
-  competencyLabel: { fontFamily: "Helvetica-Bold" },
+  competencyLabel: { fontFamily: "Times-Bold" },
   // Experience
   expEntry: { marginBottom: 5 },
   expCompanyLine: { flexDirection: "row", justifyContent: "space-between" },
-  expCompany: { fontSize: 10.5, fontFamily: "Helvetica-Bold" },
-  expLocation: { fontSize: 10, fontFamily: "Helvetica-Oblique" },
+  expCompany: { fontSize: 10.5, fontFamily: "Times-Bold" },
+  expLocation: { fontSize: 10, fontFamily: "Times-Italic" },
   expTitleLine: { flexDirection: "row", justifyContent: "space-between" },
-  expTitle: { fontSize: 10.5, fontFamily: "Helvetica-Bold" },
-  expDates: { fontSize: 10, fontFamily: "Helvetica-Bold" },
-  expIntro: { fontSize: 10, fontFamily: "Helvetica-Oblique", marginTop: 2, marginBottom: 3, lineHeight: 1.4 },
+  expTitle: { fontSize: 10.5, fontFamily: "Times-Bold" },
+  expDates: { fontSize: 10, fontFamily: "Times-Bold" },
+  expIntro: { fontSize: 10, fontFamily: "Times-Italic", marginTop: 2, marginBottom: 3, lineHeight: 1.4 },
   bulletRow: { flexDirection: "row", marginBottom: 1.5 },
-  bulletDot: { width: 12, fontSize: 7, marginTop: 1.5 },
+  bulletDot: { width: 12, fontSize: 10, marginTop: 0 },
   bulletText: { flex: 1, fontSize: 10, lineHeight: 1.4 },
   // Skills
   skillsRow: { fontSize: 10, lineHeight: 1.45, marginBottom: 1 },
   // Education
   eduTop: { flexDirection: "row", justifyContent: "space-between" },
-  eduDegree: { fontSize: 10.5, fontFamily: "Helvetica-Bold" },
+  eduDegree: { fontSize: 10.5, fontFamily: "Times-Bold" },
   eduDate: { fontSize: 10 },
   eduSchool: { fontSize: 10 },
 });
@@ -72,9 +63,9 @@ function BulletLine({ text }: { text: string }) {
     const rest = text.slice(colonIdx + 2);
     return (
       <View style={s.bulletRow}>
-        <Text style={s.bulletDot}>●</Text>
+        <Text style={s.bulletDot}>•</Text>
         <Text style={s.bulletText}>
-          <Text style={{ fontFamily: "Helvetica-Bold" }}>{label}</Text>
+          <Text style={{ fontFamily: "Times-Bold" }}>{label}</Text>
           {" "}{rest}
         </Text>
       </View>
@@ -82,7 +73,7 @@ function BulletLine({ text }: { text: string }) {
   }
   return (
     <View style={s.bulletRow}>
-      <Text style={s.bulletDot}>●</Text>
+      <Text style={s.bulletDot}>•</Text>
       <Text style={s.bulletText}>{text}</Text>
     </View>
   );
@@ -155,7 +146,7 @@ export function CvDocument({ cv }: { cv: TailoredCV }) {
                   <Text style={s.expTitle}>{exp.title}</Text>
                   <Text style={s.expDates}>{formatDate(exp.start)} – {formatDate(exp.end)}</Text>
                 </View>
-                {introBullet && <Text style={s.expIntro}>{introBullet.replace(/^_|_$/g, "").replace(/^\*|\*$/g, "")}</Text>}
+                {introBullet && introBullet.trim() && <Text style={s.expIntro}>{introBullet.replace(/^_|_$/g, "").replace(/^\*|\*$/g, "")}</Text>}
                 {restBullets.map((b, j) => <BulletLine key={j} text={b} />)}
               </View>
             );

@@ -15,7 +15,18 @@ export async function GET(req: NextRequest) {
   if (!record) return NextResponse.json({ error: "CV not found" }, { status: 404 });
 
   const cv = record.content_json as any;
-  const buffer = await renderToBuffer(React.createElement(CvDocument, { cv }) as any);
+
+  let buffer: Buffer;
+  try {
+    buffer = await renderToBuffer(React.createElement(CvDocument, { cv }) as any);
+  } catch (err: any) {
+    console.error("renderToBuffer error:", err);
+    return NextResponse.json({ error: "PDF render failed", detail: String(err) }, { status: 500 });
+  }
+
+  if (!buffer || buffer.length === 0) {
+    return NextResponse.json({ error: "PDF rendered empty", cv_keys: Object.keys(cv ?? {}) }, { status: 500 });
+  }
 
   const filename = `CA_${new Date().getFullYear()}_${cv.companyName?.replace(/\s+/g, "")}_CV.pdf`;
 

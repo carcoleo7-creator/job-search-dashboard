@@ -62,7 +62,7 @@ function BulletLine({ text }: { text: string }) {
     const label = text.slice(0, colonIdx + 1);
     const rest = text.slice(colonIdx + 2);
     return (
-      <View style={s.bulletRow}>
+      <View style={s.bulletRow} wrap={false}>
         <Text style={s.bulletDot}>•</Text>
         <Text style={s.bulletText}>
           <Text style={{ fontFamily: "Times-Bold" }}>{label}</Text>
@@ -72,7 +72,7 @@ function BulletLine({ text }: { text: string }) {
     );
   }
   return (
-    <View style={s.bulletRow}>
+    <View style={s.bulletRow} wrap={false}>
       <Text style={s.bulletDot}>•</Text>
       <Text style={s.bulletText}>{text}</Text>
     </View>

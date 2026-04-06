@@ -136,18 +136,22 @@ export function CvDocument({ cv }: { cv: TailoredCV }) {
 
             return (
               <View key={i} style={s.expEntry}>
-                {showCompany && (
-                  <View style={s.expCompanyLine}>
-                    <Text style={s.expCompany}>{exp.company}</Text>
-                    <Text style={s.expLocation}>{exp.location}</Text>
+                {/* Keep header + first bullet together to prevent orphaned headings */}
+                <View wrap={false}>
+                  {showCompany && (
+                    <View style={s.expCompanyLine}>
+                      <Text style={s.expCompany}>{exp.company}</Text>
+                      <Text style={s.expLocation}>{exp.location}</Text>
+                    </View>
+                  )}
+                  <View style={s.expTitleLine}>
+                    <Text style={s.expTitle}>{exp.title}</Text>
+                    <Text style={s.expDates}>{formatDate(exp.start)} – {formatDate(exp.end)}</Text>
                   </View>
-                )}
-                <View style={s.expTitleLine}>
-                  <Text style={s.expTitle}>{exp.title}</Text>
-                  <Text style={s.expDates}>{formatDate(exp.start)} – {formatDate(exp.end)}</Text>
+                  {introBullet && introBullet.trim() && <Text style={s.expIntro}>{introBullet.replace(/^_|_$/g, "").replace(/^\*|\*$/g, "")}</Text>}
+                  {restBullets[0] && <BulletLine text={restBullets[0]} />}
                 </View>
-                {introBullet && introBullet.trim() && <Text style={s.expIntro}>{introBullet.replace(/^_|_$/g, "").replace(/^\*|\*$/g, "")}</Text>}
-                {restBullets.map((b, j) => <BulletLine key={j} text={b} />)}
+                {restBullets.slice(1).map((b, j) => <BulletLine key={j + 1} text={b} />)}
               </View>
             );
           })}

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db, companies, jobs } from "@/lib/db";
 import { COMPANIES } from "@/lib/companies";
-import { scrapeCompany, isRelevant } from "@/lib/scrapers";
+import { scrapeCompany, isRelevant, isRemote } from "@/lib/scrapers";
 import { eq, and } from "drizzle-orm";
 
 export const maxDuration = 300;
@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
       for (const job of scraped) {
         const relevant_flag = isRelevant(job.title, company.target_roles);
         if (!relevant_flag) continue;
+        if (!isRemote(job.location)) continue;
         relevant++;
 
         // Check if exists

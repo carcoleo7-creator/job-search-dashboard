@@ -23,6 +23,10 @@ export function isRelevant(title: string, targetRoles: string[]): boolean {
   return targetRoles.some((role) => t.includes(role.toLowerCase()));
 }
 
+export function isRemote(location: string): boolean {
+  return location.toLowerCase().includes("remote");
+}
+
 // ── GREENHOUSE ────────────────────────────────────────────────────────────────
 async function scrapeGreenhouse(slug: string): Promise<ScrapedJob[]> {
   try {

@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, integer, jsonb, boolean, serial } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer, jsonb, boolean, serial, primaryKey } from "drizzle-orm/pg-core";
 
 export const companies = pgTable("companies", {
   id: text("id").primaryKey(),
@@ -41,6 +41,14 @@ export const generatedCvs = pgTable("generated_cvs", {
   created_at: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const searchSettings = pgTable("search_settings", {
+  id: integer("id").primaryKey().default(1),
+  keywords: jsonb("keywords").$type<string[]>().default([]),
+  location_filter: text("location_filter").default("remote").notNull(), // remote | hybrid | any
+  updated_at: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export type Company = typeof companies.$inferSelect;
 export type Job = typeof jobs.$inferSelect;
 export type GeneratedCv = typeof generatedCvs.$inferSelect;
+export type SearchSettings = typeof searchSettings.$inferSelect;

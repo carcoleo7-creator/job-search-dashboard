@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db, companies, jobs } from "@/lib/db";
+import { db, companies, jobs, searchSettings } from "@/lib/db";
 import { COMPANIES } from "@/lib/companies";
-import { scrapeCompany, isRelevant, isRemote } from "@/lib/scrapers";
+import { scrapeCompany, isRelevant } from "@/lib/scrapers";
 import { eq, and } from "drizzle-orm";
 
 export const maxDuration = 300;
@@ -13,6 +13,13 @@ export async function POST(req: NextRequest) {
   const targets = companyId
     ? COMPANIES.filter((c) => c.id === companyId)
     : COMPANIES;
+
+  // Load search settings
+  const [settings] = await db.select().from(searchSettings).where(eq(searchSettings.id, 1)).limit(1);
+  const globalKeywords: string[] = settings?.keywords?.length
+    ? settings.keywords
+    : ["operations", "strategy", "chief of staff", "business operations", "revenue operations", "program manager"];
+  const locationFilter: string = settings?.location_filter ?? "remote";
 
   let totalNew = 0;
   const results: { company: string; found: number; relevant: number; new: number }[] = [];
@@ -43,9 +50,12 @@ export async function POST(req: NextRequest) {
       let newJobs = 0;
 
       for (const job of scraped) {
-        const relevant_flag = isRelevant(job.title, company.target_roles);
+        const keywords = [...company.target_roles, ...globalKeywords];
+        const relevant_flag = isRelevant(job.title, keywords);
         if (!relevant_flag) continue;
-        if (!isRemote(job.location)) continue;
+
+        if (locationFilter === "remote" && !job.location.toLowerCase().includes("remote")) continue;
+        if (locationFilter === "hybrid" && !job.location.toLowerCase().match(/remote|hybrid/)) continue;
         relevant++;
 
         // Check if exists

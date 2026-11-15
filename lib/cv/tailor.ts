@@ -40,7 +40,7 @@ Titles and dates (all ezCater roles under one employer "ezCater, Remote", newest
 - Senior Manager, Strategic Operations & Product Management | 2026 – Present
 - Director, Platform Operations | 2024 – 2026
 - Director, Delivery Partnerships & Operations | 2022 – 2024
-- Director, Business Operations & Technology | 2021 – 2022
+- Head of Business Operations & Technology | 2021 – 2022
 - SwagUp, Piscataway, NJ: Director of Operations | 2018 – 2021
 - Consulting Engagements | 2020 – 2021
 - Aramark, New York and New Jersey: Multi-Unit General Manager | 2014 – 2018

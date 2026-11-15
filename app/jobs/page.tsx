@@ -1,6 +1,7 @@
 import { db, jobs } from "@/lib/db";
 import { desc } from "drizzle-orm";
 import JobsList from "@/components/JobsList";
+import ImportJobForm from "@/components/ImportJobForm";
 
 export const dynamic = "force-dynamic";
 
@@ -12,8 +13,9 @@ export default async function JobsPage() {
 
   return (
     <div className="p-8">
-      <div className="mb-6">
+      <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Jobs</h2>
+        <ImportJobForm />
       </div>
 
       {allJobs.length === 0 && (

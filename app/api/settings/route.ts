@@ -6,7 +6,7 @@ export async function GET() {
   const [row] = await db.select().from(searchSettings).where(eq(searchSettings.id, 1)).limit(1);
   if (!row) {
     return NextResponse.json({
-      keywords: ["operations", "strategy", "chief of staff", "business operations", "revenue operations", "program manager"],
+      keywords: ["operations", "strategy", "chief of staff", "business operations", "revenue operations", "program manager", "product manager", "senior product manager"],
       location_filter: "remote",
     });
   }

@@ -7,7 +7,17 @@ export const dynamic = "force-dynamic";
 
 export default async function JobsPage() {
   const allJobs = await db
-    .select()
+    .select({
+      id: jobs.id,
+      company_id: jobs.company_id,
+      title: jobs.title,
+      url: jobs.url,
+      location: jobs.location,
+      department: jobs.department,
+      salary_text: jobs.salary_text,
+      status: jobs.status,
+      found_at: jobs.found_at,
+    })
     .from(jobs)
     .orderBy(desc(jobs.found_at));
 

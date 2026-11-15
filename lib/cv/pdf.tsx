@@ -50,7 +50,9 @@ const s = StyleSheet.create({
 function formatDate(val: string): string {
   if (!val || val === "Present") return val;
   try {
-    const [year, month] = val.split("-");
+    const parts = val.split("-");
+    if (parts.length === 1) return parts[0]; // year-only: "2026" → "2026"
+    const [year, month] = parts;
     const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     return `${months[parseInt(month) - 1]} ${year}`;
   } catch { return val; }

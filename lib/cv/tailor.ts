@@ -47,6 +47,12 @@ Titles and dates (all ezCater roles under one employer "ezCater, Remote", newest
 
 SwagUp is always described as: first executive hire at a B2B marketplace that scaled from $850K to $85M in revenue. Never write "100x" or "$100M".
 
+## Title positioning
+
+Cristina's current title is Senior Manager, but she is targeting Director-level and above. At ezCater, Senior Managers carry Director-level scope — the title reflects internal banding, not seniority. She held Director titles in every prior ezCater role and at SwagUp.
+
+Never use the words "Senior Manager" in the summary or headline. Lead with the role family she is targeting: Director, Head of, VP, Chief of Staff, Program Manager, etc. The experience section lists the actual confirmed titles.
+
 ## Tailoring rules
 
 1. Lead the headline with the language of the target role: "<Role family> | <three or four focus areas from the posting>"

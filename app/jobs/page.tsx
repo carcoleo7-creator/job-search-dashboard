@@ -47,7 +47,14 @@ export default async function JobsPage() {
                   {job.location && <span className="text-xs text-gray-400">· {job.location}</span>}
                 </div>
                 <h3 className="font-semibold text-gray-900 text-sm">{job.title}</h3>
-                {job.department && <p className="text-xs text-gray-500 mt-0.5">{job.department}</p>}
+                <div className="flex items-center gap-2 mt-0.5">
+                  {job.department && <p className="text-xs text-gray-500">{job.department}</p>}
+                  {(job as any).salary_text && (
+                    <span className="text-xs font-medium text-green-700 bg-green-50 px-1.5 py-0.5 rounded">
+                      {(job as any).salary_text}
+                    </span>
+                  )}
+                </div>
                 <p className="text-xs text-gray-400 mt-1">
                   Found {new Date(job.found_at).toLocaleDateString()}
                 </p>

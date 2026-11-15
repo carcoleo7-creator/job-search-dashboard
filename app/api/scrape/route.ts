@@ -4,6 +4,37 @@ import { COMPANIES } from "@/lib/companies";
 import { scrapeCompany, isRelevant } from "@/lib/scrapers";
 import { eq, and } from "drizzle-orm";
 
+function extractSalary(text: string): { salaryText: string | null; salaryMin: number | null; salaryMax: number | null } {
+  if (!text) return { salaryText: null, salaryMin: null, salaryMax: null };
+  // Match patterns like $150,000, $150k, $150K, ranges like $150,000 - $200,000
+  const pattern = /\$\s*(\d{1,3}(?:,\d{3})*|\d+)\s*[kK]?\s*(?:[-–—to]+\s*\$?\s*(\d{1,3}(?:,\d{3})*|\d+)\s*[kK]?)?(?:\s*\/?\s*(?:year|yr|annually))?/gi;
+  const matches = [...text.matchAll(pattern)];
+  if (!matches.length) return { salaryText: null, salaryMin: null, salaryMax: null };
+
+  const toNum = (s: string, hasK: boolean) => {
+    const n = parseInt(s.replace(/,/g, ""));
+    return hasK || n < 1000 ? n * 1000 : n;
+  };
+
+  const nums: number[] = [];
+  for (const m of matches) {
+    const hasK = m[0].toLowerCase().includes("k");
+    if (m[1]) nums.push(toNum(m[1], hasK));
+    if (m[2]) nums.push(toNum(m[2], hasK));
+  }
+
+  // Filter to plausible salary range ($50k–$1M)
+  const salaries = nums.filter((n) => n >= 50000 && n <= 1000000);
+  if (!salaries.length) return { salaryText: null, salaryMin: null, salaryMax: null };
+
+  const salaryMin = Math.min(...salaries);
+  const salaryMax = Math.max(...salaries);
+  const fmt = (n: number) => `$${(n / 1000).toFixed(0)}k`;
+  const salaryText = salaryMin === salaryMax ? fmt(salaryMin) : `${fmt(salaryMin)}–${fmt(salaryMax)}`;
+
+  return { salaryText, salaryMin, salaryMax };
+}
+
 export const maxDuration = 300;
 
 export async function POST(req: NextRequest) {
@@ -65,6 +96,11 @@ export async function POST(req: NextRequest) {
           .limit(1);
 
         if (existing.length === 0) {
+          const { salaryText, salaryMin, salaryMax } = extractSalary(job.description_raw ?? "");
+
+          // Skip if salary is explicitly listed and max is under $150k
+          if (salaryMax !== null && salaryMax < 150000) continue;
+
           await db.insert(jobs).values({
             company_id: company.id,
             external_id: job.external_id,
@@ -73,6 +109,9 @@ export async function POST(req: NextRequest) {
             location: job.location,
             department: job.department,
             description_raw: job.description_raw,
+            salary_text: salaryText,
+            salary_min: salaryMin,
+            salary_max: salaryMax,
             is_relevant: true,
             relevance_score: 100,
             status: "new",

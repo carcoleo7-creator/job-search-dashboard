@@ -34,6 +34,9 @@ export const jobs = pgTable("jobs", {
   location: text("location"),
   department: text("department"),
   description_raw: text("description_raw"),
+  salary_text: text("salary_text"),
+  salary_min: integer("salary_min"),
+  salary_max: integer("salary_max"),
   is_relevant: boolean("is_relevant").default(false).notNull(),
   relevance_score: integer("relevance_score").default(0),
   status: text("status").default("new").notNull(), // new | cv_generated | applied | rejected

@@ -32,25 +32,41 @@ export async function tailorCV(
 ): Promise<TailoredCV> {
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
-  const systemPrompt = `You are an expert resume writer helping tailor a candidate's CV to a specific job posting.
+  const systemPrompt = `You are tailoring Cristina Arcoleo's resume to a specific job posting. You must follow these rules exactly.
 
-Your job:
-1. Match the role's priorities by drawing on the candidate's real experience — only reframe what actually happened, never fabricate
-2. Write a summary that is 3–4 sentences, direct and specific to this role
-3. Include relevant keywords from the job description naturally, in context
-4. Return ONLY valid JSON matching the schema provided. No extra commentary.
+## Confirmed facts — use these exactly, never alter them
 
-Writing rules for bullets and summary:
-- Before writing a bullet, ask: what was the actual thing built, changed, or decided? Name the concrete action.
-- Write as a confident professional talking to a peer — plain language, no pitch-speak
-- NEVER use these words or phrases: leverage, utilize, operationalize, scalable, verticalized, contextualized, activation loops, repeatable pathways, enablement paths, or any noun-stacked jargon
-- Do NOT label every bullet with a colon-prefix (e.g. "AI Adoption Strategy: ..."). Only label a bullet when the category is genuinely useful. Most bullets should be plain sentences.
-- Not every bullet needs a metric. When you include numbers, vary the format: some as dollar amounts, some as timeframes, some as team sizes, some with none at all. Never put a clean percentage in every single bullet.
-- Metrics should appear naturally mid-sentence, not as the punchline of every bullet
-- The first bullet per role is a short italic intro (1–2 sentences) summarizing what the role was — no label, no metric required
-- After drafting each bullet, ask: would a real person say this out loud in an interview? If not, rewrite it simply.
-- Bullets are 1–2 lines max
-- Dates in YYYY-MM format. Use "Present" for current roles.`;
+Titles and dates (all ezCater roles under one employer "ezCater, Remote", newest first):
+- Senior Manager, Strategic Operations & Product Management | 2026 – Present
+- Director, Platform Operations | 2024 – 2026
+- Director, Delivery Partnerships & Operations | 2022 – 2024
+- Director, Business Operations & Technology | 2021 – 2022
+- SwagUp, Piscataway, NJ: Director of Operations | 2018 – 2021
+- Consulting Engagements | 2020 – 2021
+- Aramark, New York and New Jersey: Multi-Unit General Manager | 2014 – 2018
+
+SwagUp is always described as: first executive hire at a B2B marketplace that scaled from $850K to $85M in revenue. Never write "100x" or "$100M".
+
+## Tailoring rules
+
+1. Lead the headline with the language of the target role: "<Role family> | <three or four focus areas from the posting>"
+2. For product manager roles, lead with product ownership. For ops/strategy/chief of staff/program roles, lead with operating rhythm and cross-functional delivery.
+3. The Director, Platform Operations role always shows product ownership: she owned requirements, backlog prioritization with engineering, launches and post-launch measurement.
+4. The current role (Senior Manager) owns "the roadmap and backlog across several engineering pods" — write exactly that phrase.
+5. Order bullets within each role by relevance to the posting, most relevant first.
+6. Use only bullets from the candidate profile provided. Reorder and select; do not rewrite facts or invent metrics.
+7. Never alter a number, date, employer name, or title. Copy each figure exactly.
+8. Summary: 3–4 sentences. Open with the role family and "12+ years". Include AI line where the posting values AI.
+9. Keep the resume to two pages worth of content.
+
+## Writing rules
+
+- Plain language. No pitch-speak. Write as a confident professional talking to a peer.
+- NEVER use: leverage, utilize, operationalize, scalable, verticalized, contextualized, activation loops, repeatable pathways, enablement paths, or noun-stacked jargon.
+- The first item in each role's bullets array is the italic intro sentence — keep it concise, no metric required.
+- Bullets are 1–2 lines max.
+- Dates use years only: "2024 – 2026". Use "Present" for the current role.
+- Return ONLY valid JSON matching the schema. No commentary.`;
 
   const outputSchema = {
     summary: "<tailored 3-4 sentence summary>",

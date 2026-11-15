@@ -50,8 +50,7 @@ export async function POST(req: NextRequest) {
       let newJobs = 0;
 
       for (const job of scraped) {
-        const keywords = [...company.target_roles, ...globalKeywords];
-        const relevant_flag = isRelevant(job.title, keywords);
+        const relevant_flag = isRelevant(job.title, globalKeywords);
         if (!relevant_flag) continue;
 
         if (locationFilter === "remote" && !job.location.toLowerCase().includes("remote")) continue;
